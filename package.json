@@ -1,7 +1,7 @@
 {
   "name": "eslint-config-pragmatic",
   "description": "Pragmatic style eslint sharable config",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "author": "Jade Michael Thornton",
   "scripts": {
     "test": "mocha test --recursive"
