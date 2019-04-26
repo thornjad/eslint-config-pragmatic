@@ -1,6 +1,5 @@
-'use strict';
 
-const isIndexOf = node => {
+const isIndexOf = (node) => {
 	return (
 		node.type === 'CallExpression' &&
 		node.callee.type === 'MemberExpression' &&
@@ -21,8 +20,8 @@ const report = (context, node, target, pattern) => {
 	context.report({
 		node,
 		message: 'Use `.includes()`, rather than `.indexOf()`, when checking for existence.',
-		fix: fixer => {
-			const isNot = node => ['===', '==', '<'].includes(node.operator) ? '!' : '';
+		fix: (fixer) => {
+			const isNot = node => [ '===', '==', '<' ].includes(node.operator) ? '!' : '';
 			const replacement = `${isNot(node)}${targetSource}.includes(${patternSource})`;
 			return fixer.replaceText(node, replacement);
 		}
@@ -30,28 +29,28 @@ const report = (context, node, target, pattern) => {
 };
 
 const create = context => ({
-	BinaryExpression: node => {
-		const {left, right} = node;
+	BinaryExpression: (node) => {
+		const { left, right } = node;
 
 		if (isIndexOf(left)) {
 			const target = left.callee.object;
 			const pattern = left.arguments[0];
 
 			if (right.type === 'UnaryExpression') {
-				const {argument} = right;
+				const { argument } = right;
 
 				if (argument.type !== 'Literal') {
 					return;
 				}
 
-				const {value} = argument;
+				const { value } = argument;
 
-				if (['!==', '!=', '>', '===', '=='].includes(node.operator) && isNegativeOne(right.operator, value)) {
+				if ([ '!==', '!=', '>', '===', '==' ].includes(node.operator) && isNegativeOne(right.operator, value)) {
 					report(context, node, target, pattern);
 				}
 			}
 
-			if (right.type === 'Literal' && ['>=', '<'].includes(node.operator) && right.value === 0) {
+			if (right.type === 'Literal' && [ '>=', '<' ].includes(node.operator) && right.value === 0) {
 				report(context, node, target, pattern);
 			}
 		}

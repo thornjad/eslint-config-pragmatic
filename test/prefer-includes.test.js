@@ -2,7 +2,7 @@ const rule = require('../rules/lib/prefer-includes');
 const RuleTester = require('eslint').RuleTester;
 
 const ruleTester = new RuleTester({
-  parserOptions: {ecmaVersion: 2018}
+	parserOptions: { ecmaVersion: 2018 }
 });
 
 const errors = [{

@@ -2,13 +2,13 @@ const doesNotContain = (string, chars) => chars.every(char => !string.includes(c
 
 const isSimpleString = string => doesNotContain(
 	string,
-	['^', '$', '+', '[', '{', '(', '\\', '.', '?', '*']
+	[ '^', '$', '+', '[', '{', '(', '\\', '.', '?', '*' ]
 );
 
-const create = context => {
+const create = (context) => {
 	return {
-		CallExpression(node) {
-			const {callee} = node;
+		CallExpression (node) {
+			const { callee } = node;
 			const prop = callee.property;
 
 			if (!(prop && callee.type === 'MemberExpression')) {
@@ -19,9 +19,9 @@ const create = context => {
 
 			let regex;
 			if (prop.name === 'test' && callee.object.regex) {
-				({regex} = callee.object);
+				({ regex } = callee.object);
 			} else if (prop.name === 'match' && args && args[0] && args[0].regex) {
-				({regex} = args[0]);
+				({ regex } = args[0]);
 			} else {
 				return;
 			}
@@ -30,7 +30,7 @@ const create = context => {
 				return;
 			}
 
-			const {pattern} = regex;
+			const { pattern } = regex;
 			if (pattern.startsWith('^') && isSimpleString(pattern.slice(1))) {
 				context.report({
 					node,

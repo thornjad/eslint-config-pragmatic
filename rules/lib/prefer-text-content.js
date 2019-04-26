@@ -1,9 +1,9 @@
 const message = 'Prefer `textContent` over `innerText`.';
 
-const create = context => {
+const create = (context) => {
 	return {
-		MemberExpression: node => {
-			const {property} = node;
+		MemberExpression: (node) => {
+			const { property } = node;
 
 			if (property.type === 'Identifier' && !node.computed && property.name === 'innerText') {
 				context.report({

@@ -1,7 +1,7 @@
 const forbiddenIdentifierNames = new Map([
-	['getElementById', 'querySelector'],
-	['getElementsByClassName', 'querySelectorAll'],
-	['getElementsByTagName', 'querySelectorAll']
+	[ 'getElementById', 'querySelector' ],
+	[ 'getElementsByClassName', 'querySelectorAll' ],
+	[ 'getElementsByTagName', 'querySelectorAll' ]
 ]);
 
 const getReplacementForId = value => `#${value}`;
@@ -19,29 +19,38 @@ const getLiteralFix = (fixer, node, identifierName) => {
 	}
 
 	if (identifierName === 'getElementsByClassName') {
-		replacement = getQuotedReplacement(node, getReplacementForClass(node.value));
+		replacement = getQuotedReplacement(
+			node,
+			getReplacementForClass(node.value)
+		);
 	}
 
-	return [fixer.replaceText(node, replacement)];
+	return [ fixer.replaceText(node, replacement) ];
 };
 
 const getTemplateLiteralFix = (fixer, node, identifierName) => {
-	const fix = [fixer.insertTextAfter(node, '`'), fixer.insertTextBefore(node, '`')];
+	const fix = [ fixer.insertTextAfter(node, '`'), fixer.insertTextBefore(node, '`') ];
 
-	node.quasis.forEach(templateElement => {
+	node.quasis.forEach((templateElement) => {
 		if (identifierName === 'getElementById') {
-			fix.push(fixer.replaceText(templateElement, getReplacementForId(templateElement.value.cooked)));
+			fix.push(fixer.replaceText(
+				templateElement,
+				getReplacementForId(templateElement.value.cooked)
+			));
 		}
 
 		if (identifierName === 'getElementsByClassName') {
-			fix.push(fixer.replaceText(templateElement, getReplacementForClass(templateElement.value.cooked)));
+			fix.push(fixer.replaceText(
+				templateElement,
+				getReplacementForClass(templateElement.value.cooked)
+			));
 		}
 	});
 
 	return fix;
 };
 
-const canBeFixed = node => {
+const canBeFixed = (node) => {
 	if (node.type === 'Literal') {
 		return node.value === null || Boolean(node.value.trim());
 	}
@@ -54,7 +63,7 @@ const canBeFixed = node => {
 	return false;
 };
 
-const hasValue = node => {
+const hasValue = (node) => {
 	if (node.type === 'Literal') {
 		return node.value;
 	}
@@ -75,10 +84,10 @@ const fix = (node, identifierName, preferedSelector) => {
 	];
 };
 
-const create = context => {
+const create = (context) => {
 	return {
-		CallExpression(node) {
-			const {callee: {property, type}} = node;
+		CallExpression (node) {
+			const { callee: { property, type }} = node;
 			if (!property || type !== 'MemberExpression') {
 				return;
 			}

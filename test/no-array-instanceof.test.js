@@ -2,7 +2,7 @@ const rule = require('../rules/lib/no-array-instanceof');
 const RuleTester = require('eslint').RuleTester;
 
 const ruleTester = new RuleTester({
-  parserOptions: {ecmaVersion: 2018}
+	parserOptions: { ecmaVersion: 2018 }
 });
 
 const errors = [{

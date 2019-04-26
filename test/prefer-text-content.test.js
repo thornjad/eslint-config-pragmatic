@@ -2,7 +2,7 @@ const rule = require('../rules/lib/prefer-text-content');
 const RuleTester = require('eslint').RuleTester;
 
 const ruleTester = new RuleTester({
-  parserOptions: {ecmaVersion: 2018}
+	parserOptions: { ecmaVersion: 2018 }
 });
 
 const error = {
@@ -22,12 +22,12 @@ ruleTester.run('prefer-text-content', rule, {
 		{
 			code: 'node.innerText;',
 			output: 'node.textContent;',
-			errors: [error]
+			errors: [ error ]
 		},
 		{
 			code: 'node.innerText = \'foo\';',
 			output: 'node.textContent = \'foo\';',
-			errors: [error]
+			errors: [ error ]
 		}
 	]
 });
