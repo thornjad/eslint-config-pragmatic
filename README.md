@@ -10,8 +10,10 @@ problem-free JavaScript.
 
 ## Installation
 
+There are several peer dependencies which must be installed before pragmatic.
+
 ```shell
-npm install --save-dev eslint-config-standard
+npm install --save-dev eslint-config-standard eslint-plugin-standard eslint-plugin-node eslint-plugin-import
 npm install --save-dev eslint-config-pragmatic
 ```
 
